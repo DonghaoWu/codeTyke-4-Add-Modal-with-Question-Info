@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import SelectionBox from '../selectionBox/SelectionBox';
 import Button from '../button/Button';
 import ProgressBar from '../progressBar/ProgressBar';
+import Modal from '../modal/Modal';
+import Info from '../info/Info';
 
 import './Styles.scss';
 
@@ -9,11 +11,16 @@ const LearningModule = ({ setGameStatus }) => {
   const [currentQuestionId, setCurrentQuestionId] = React.useState(0);
   const [quizData, setQuizData] = React.useState({});
   const [showLoader, setShowLoader] = React.useState(false);
+  const [modal, setModal] = React.useState(false);
 
   let currentQuestion = quizData.questionArr ? quizData.questionArr[currentQuestionId] : {};
   React.useEffect(() => {
     getQuizData();
   }, []);
+
+  const handleSetModal = () => {
+    setModal(!modal);
+  }
 
   const getQuizData = () => {
     fetch("http://localhost:8080/problems")
@@ -50,11 +57,20 @@ const LearningModule = ({ setGameStatus }) => {
   return (
     <div className="learningModule">
       {currentQuestion.title &&
-        <>
+        <Fragment>
+          {
+            modal &&
+            <Modal>
+              <Info handleSetModal={handleSetModal} currentQuestion={currentQuestion} />
+            </Modal>
+          }
           <ProgressBar totalQuestions={quizData.totalQuestions} id={currentQuestion.id} />
           <div className="learningModule--header">
-            <div className="learningModule--title">
-              {currentQuestion.title}
+            <div className="learningModule--titleContainer">
+              <div className="learningModule--title">
+                {currentQuestion.title}
+              </div>
+              <i className="fas fa-info-circle" onClick={handleSetModal}></i>
             </div>
             <div className="learningModule--subHeader">
               {currentQuestion.additionalInfo}
@@ -69,7 +85,7 @@ const LearningModule = ({ setGameStatus }) => {
               <Button label="Submit" handleSubmit={handleSubmit} showLoader={showLoader} hasIcons />
             </div>
           </div>
-        </>
+        </Fragment>
       }
     </div>
   )

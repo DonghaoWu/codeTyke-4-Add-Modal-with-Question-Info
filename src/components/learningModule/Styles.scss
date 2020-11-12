@@ -7,6 +7,13 @@
         text-align: center;
     }
 
+    &--titleContainer {
+        padding: 0 6%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     &--title {
         margin: 25px 10px;
         color: $morning-sky;
