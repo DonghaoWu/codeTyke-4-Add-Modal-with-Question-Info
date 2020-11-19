@@ -1,10 +1,7 @@
 import React from 'react';
 import './Styles.scss';
 
-class Info extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+class InfoModal extends React.Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside, false);
@@ -41,4 +38,4 @@ class Info extends React.Component {
     }
 }
 
-export default Info;
+export default InfoModal;

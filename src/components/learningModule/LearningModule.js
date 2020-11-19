@@ -3,7 +3,7 @@ import SelectionBox from '../selectionBox/SelectionBox';
 import Button from '../button/Button';
 import ProgressBar from '../progressBar/ProgressBar';
 import Modal from '../modal/Modal';
-import Info from '../info/Info';
+import InfoModal from '../info/InfoModal';
 
 import './Styles.scss';
 
@@ -61,7 +61,7 @@ const LearningModule = ({ setGameStatus }) => {
           {
             modal &&
             <Modal>
-              <Info handleSetModal={handleSetModal} currentQuestion={currentQuestion} />
+              <InfoModal handleSetModal={handleSetModal} currentQuestion={currentQuestion} />
             </Modal>
           }
           <ProgressBar totalQuestions={quizData.totalQuestions} id={currentQuestion.id} />
