@@ -24,12 +24,12 @@ class Info extends React.Component {
         const { currentQuestion, handleSetModal } = this.props;
         return (
             <div className='infoModal'>
-                <div ref={node => this.node = node} className='infoModal--Container'>
+                <div ref={node => this.node = node} className='infoModal--container'>
                     <div className='infoModal--modal-close' onClick={handleSetModal}>
                         &times;
                     </div>
 
-                    <div className='infoModal--content-container'>
+                    <div className='infoModal--contentCcontainer'>
                         <div className='infoModal--title'>Rules</div>
                         <p className='infoModal--text'>
                             {currentQuestion.additionalInfo}

@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
 
-    &--Container {
+    &--container {
         margin-top: 40%;
         width:90%;
         height:30%;
@@ -30,7 +30,7 @@
         font-style: bold;
     }
 
-    &--content-container{
+    &--contentContainer{
         display: flex;
         flex-direction: column;
         align-items: center;
