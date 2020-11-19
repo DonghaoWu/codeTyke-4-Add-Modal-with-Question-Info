@@ -22,11 +22,11 @@ class InfoModal extends React.Component {
         return (
             <div className='infoModal'>
                 <div ref={node => this.node = node} className='infoModal--container'>
-                    <div className='infoModal--modal-close' onClick={handleSetModal}>
+                    <div className='infoModal--modalClose' onClick={handleSetModal}>
                         &times;
                     </div>
 
-                    <div className='infoModal--contentCcontainer'>
+                    <div className='infoModal--contentContainer'>
                         <div className='infoModal--title'>Rules</div>
                         <p className='infoModal--text'>
                             {currentQuestion.additionalInfo}
