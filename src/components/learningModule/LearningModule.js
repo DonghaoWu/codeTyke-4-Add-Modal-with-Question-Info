@@ -16,6 +16,7 @@ const LearningModule = ({ setGameStatus }) => {
 
   const [selectedAnsArr, setAnswerArr] = React.useState([false, false, false, false]);
   const [resultInfo, setResultInfo] = React.useState('');
+  const [mode, setMode] = React.useState('normal');
 
   let hasSelectedOne = selectedAnsArr[0] || selectedAnsArr[1] || selectedAnsArr[2] || selectedAnsArr[3];
 
@@ -56,11 +57,11 @@ const LearningModule = ({ setGameStatus }) => {
 
         if (selectedWrongAnswerNum > 0) {
           setResultInfo('Try again.');
-          setAnswerArr([false, false, false, false]);
+          setMode('try');
         }
         else if (correctAnswerNum > selectedCorrectAnswerNum) {
           setResultInfo('Not all.');
-          setAnswerArr([false, false, false, false]);
+          setMode('notAll');
         }
         else if (correctAnswerNum === selectedCorrectAnswerNum) {
           setResultInfo('Correct!');
@@ -82,7 +83,7 @@ const LearningModule = ({ setGameStatus }) => {
   let possibleAnswers = [];
   if (currentQuestion.possibleAnswers) {
     possibleAnswers = currentQuestion.possibleAnswers.map((answer, index) => {
-      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} />
+      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} mode={mode} setMode={setMode}/>
     })
   }
 

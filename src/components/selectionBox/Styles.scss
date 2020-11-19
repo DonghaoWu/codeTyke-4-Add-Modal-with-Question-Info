@@ -14,7 +14,16 @@
     &--text {font-size: 1em; font-weight: 600;}
     input { position: absolute; left: 4px;}
 
-    &--active{
+    &--blue{
       background-color: #00B3FF;
     }
+  
+    &--red{
+      background-color: red;
+    }
+  
+    &--orange{
+      background-color: orange;
+    }
   }
+
