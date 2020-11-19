@@ -66,6 +66,11 @@
     &--submitButtonContainer {
         height: 50px;
         position: relative;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
         .submitButton {
             float: right;
         }
@@ -77,5 +82,19 @@
                 float: unset;
             }
         }
+    }
+
+    &--resultInfo{
+        margin-right: 10%;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .green{
+        color: rgb(28, 230, 28);
+    }
+
+    .red{
+        color:red;
     }
 }

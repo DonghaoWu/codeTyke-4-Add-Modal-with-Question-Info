@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import SelectionBox from '../selectionBox/SelectionBox';
-import Button from '../button/Button';
+import SubmitButton from '../button/SubmitButton';
 import ProgressBar from '../progressBar/ProgressBar';
 import Modal from '../modal/Modal';
 import InfoModal from '../info/InfoModal';
+import ResultInfo from '../resultInfo/ResultInfo'
 
 import './Styles.scss';
 
@@ -12,6 +13,11 @@ const LearningModule = ({ setGameStatus }) => {
   const [quizData, setQuizData] = React.useState({});
   const [showLoader, setShowLoader] = React.useState(false);
   const [modal, setModal] = React.useState(false);
+
+  const [selectedAnsArr, setAnswerArr] = React.useState([false, false, false, false]);
+  const [resultInfo, setResultInfo] = React.useState('');
+
+  let hasSelectedOne = selectedAnsArr[0] || selectedAnsArr[1] || selectedAnsArr[2] || selectedAnsArr[3];
 
   let currentQuestion = quizData.questionArr ? quizData.questionArr[currentQuestionId] : {};
   React.useEffect(() => {
@@ -38,7 +44,27 @@ const LearningModule = ({ setGameStatus }) => {
       setShowLoader(true);
       setTimeout(function () {
         console.log("Checking answer...");
-        setCurrentQuestionId(currentQuestionId + 1);
+        let correctAnswerNum = 0;
+        let selectedCorrectAnswerNum = 0;
+        let selectedWrongAnswerNum = 0;
+
+        for (let i = 0; i < currentQuestion.possibleAnswers.length; i++) {
+          if (currentQuestion.possibleAnswers[i].isCorrect) correctAnswerNum++;
+          if (currentQuestion.possibleAnswers[i].isCorrect === true && selectedAnsArr[i] === true) selectedCorrectAnswerNum++;
+          if (currentQuestion.possibleAnswers[i].isCorrect === false && selectedAnsArr[i] === true) selectedWrongAnswerNum++;
+        }
+
+        if (selectedWrongAnswerNum > 0) {
+          setResultInfo('Try again.');
+          setAnswerArr([false, false, false, false]);
+        }
+        else if (correctAnswerNum > selectedCorrectAnswerNum) {
+          setResultInfo('Not all.');
+          setAnswerArr([false, false, false, false]);
+        }
+        else if (correctAnswerNum === selectedCorrectAnswerNum) {
+          setResultInfo('Correct!');
+        }
         setShowLoader(false);
       }, 500);
     } else {
@@ -46,10 +72,17 @@ const LearningModule = ({ setGameStatus }) => {
       setGameStatus({ message: "Great Job! Play again.", loadIntro: true });
     }
   }
+
+  const handleNextQuestion = () => {
+    setResultInfo('');
+    setAnswerArr([false, false, false, false]);
+    setCurrentQuestionId(currentQuestionId + 1);
+  }
+
   let possibleAnswers = [];
   if (currentQuestion.possibleAnswers) {
     possibleAnswers = currentQuestion.possibleAnswers.map((answer, index) => {
-      return <SelectionBox id={index} key={index} answer={answer} />
+      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} />
     })
   }
 
@@ -82,7 +115,14 @@ const LearningModule = ({ setGameStatus }) => {
               {possibleAnswers}
             </div>
             <div className="learningModule--submitButtonContainer">
-              <Button label="Submit" handleSubmit={handleSubmit} showLoader={showLoader} hasIcons />
+              <ResultInfo resultInfo={resultInfo} />
+              {
+                resultInfo === 'Correct!'
+                  ?
+                  <SubmitButton label="Next" handleSubmit={handleNextQuestion} hasIcons hasSelectedOne={hasSelectedOne} />
+                  :
+                  <SubmitButton label="Submit" handleSubmit={handleSubmit} showLoader={showLoader} hasIcons hasSelectedOne={hasSelectedOne} />
+              }
             </div>
           </div>
         </Fragment>

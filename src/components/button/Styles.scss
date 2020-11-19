@@ -26,6 +26,10 @@ $size: 50px;
     }
   }
 
+  &--disabled{
+    background-color: rgb(187, 184, 184);
+  }
+
   //animation for loader
   .spinningLoader {
     animation: rotate-s-loader 1.6s linear infinite;
