@@ -18,7 +18,7 @@ const LearningModule = ({ setGameStatus }) => {
   const [resultInfo, setResultInfo] = React.useState('');
   const [mode, setMode] = React.useState('normal');
 
-  let hasSelectedOne = selectedAnsArr[0] || selectedAnsArr[1] || selectedAnsArr[2] || selectedAnsArr[3];
+  let hasSelectedOne = selectedAnsArr.includes(true);
 
   let currentQuestion = quizData.questionArr ? quizData.questionArr[currentQuestionId] : {};
   React.useEffect(() => {
@@ -65,6 +65,7 @@ const LearningModule = ({ setGameStatus }) => {
         }
         else if (correctAnswerNum === selectedCorrectAnswerNum) {
           setResultInfo('Correct!');
+          setMode('correct');
         }
         setShowLoader(false);
       }, 500);
