@@ -4,3 +4,5 @@ This is a repo to accompany the BrightCode course "Programming in an Enterprise 
 
 If you have any questions, feel free to contact your instructor or  
 [email us](mailto:info@brightcode.dev?subject=[CodeTyke]).
+
+This is a heroku app deployed demo.
