@@ -12,14 +12,17 @@
     justify-content: center;
 
     &--container {
-        margin-top: 40%;
+        margin-top: 20rem;
         width:90%;
-        height:30%;
+        height:20%;
         background-color: white;
     
         display: flex;
         flex-direction: column;
-        border-radius: 5%;
+        border-radius: 15%;
+
+        max-width: 768px;
+        margin: 11rem auto 80px auto;
     }
 
     &--modalClose {
