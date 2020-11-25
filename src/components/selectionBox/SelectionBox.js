@@ -20,7 +20,6 @@ const SelectionBox = (props) => {
     if(mode === 'notAll') cardBackGroudColor = 'orange';
     if(mode === 'correct') cardBackGroudColor = 'green';
   }
-  console.log(mode,cardBackGroudColor)
 
   return (
     <div

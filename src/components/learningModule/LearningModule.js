@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
+import axios from 'axios';
+
 import SelectionBox from '../selectionBox/SelectionBox';
 import SubmitButton from '../button/SubmitButton';
 import ProgressBar from '../progressBar/ProgressBar';
 import Modal from '../modal/Modal';
 import InfoModal from '../info/InfoModal';
-import ResultInfo from '../resultInfo/ResultInfo'
+import ResultInfo from '../resultInfo/ResultInfo';
 
 import './Styles.scss';
 
@@ -29,22 +31,20 @@ const LearningModule = ({ setGameStatus }) => {
     setModal(!modal);
   }
 
-  const getQuizData = () => {
-    fetch("http://localhost:8080/problems")
-      .then((res) => {
-        return res.json();
-      }).then((data) => {
-        setQuizData(data);
-      }).catch((err) => {
-        console.log(err);
-      });
+  const getQuizData = async () => {
+    try {
+      const res = await axios.get("/problems");
+      setQuizData(res.data);
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
 
   const handleSubmit = () => {
     if (currentQuestionId < quizData.totalQuestions - 1) {
       setShowLoader(true);
       setTimeout(function () {
-        console.log("Checking answer...");
         let correctAnswerNum = 0;
         let selectedCorrectAnswerNum = 0;
         let selectedWrongAnswerNum = 0;
@@ -84,7 +84,7 @@ const LearningModule = ({ setGameStatus }) => {
   let possibleAnswers = [];
   if (currentQuestion.possibleAnswers) {
     possibleAnswers = currentQuestion.possibleAnswers.map((answer, index) => {
-      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} mode={mode} setMode={setMode}/>
+      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} mode={mode} setMode={setMode} />
     })
   }
 
