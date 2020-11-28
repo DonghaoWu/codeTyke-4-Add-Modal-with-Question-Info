@@ -16,23 +16,7 @@ app.use(cors());
 
 app.get('/problems', (req, res) => {
   res.json(quizObj);
-})
-
-// app.get('/checkanswer/:id', (req, res) => {
-//   let id = req.params.id;
-//   let answers = req.query.answers.split(",");
-//   let solutionArr = questionArr[id].possibleAnswers.map((answer) => answer.isCorrect.toString());
-
-//   for (let i in answers) {
-//     if (answers[i] !== solutionArr[i]) {
-//       res.json({ result: false });
-//       return;
-//     }
-//   }
-
-//   res.json({ result: true });
-//   return;
-// })
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
