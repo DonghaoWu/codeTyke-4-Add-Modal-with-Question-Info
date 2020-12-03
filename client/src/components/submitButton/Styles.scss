@@ -11,19 +11,21 @@
   padding: 0 2em;
   cursor: pointer;
 
+
+  display: flex;
+  justify-content: center;
+
+  @media only screen and (min-width: $mobile) {
+    width:6rem;
+  }
+
   &--disabled{
     background-color: rgb(187, 184, 184);
   }
 
   &__container{
-    width:6rem;
     display: flex;
     align-items: center;
-    padding-left: 14%;
-
-    @media only screen and (max-width: $mobile) {
-      padding-left: 40%;
-    }
   }
   
   &__loader{

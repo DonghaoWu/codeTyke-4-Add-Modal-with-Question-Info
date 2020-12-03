@@ -18,6 +18,10 @@
     }
 
     @media only screen and (max-width: $mobile) {
+        content: " ";
+        height: 1.5rem;
         margin-right: 0;
+        margin-bottom: 0.5rem;
+        font-size: 22px;
     }
 }
