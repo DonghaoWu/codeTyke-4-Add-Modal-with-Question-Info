@@ -1,34 +1,36 @@
 @import '../../styles/utils/colors';
 
 .progressBar {
-  width: 90%;
-  height: 20px;
-  position: relative;
-  margin: 0 auto;
-  align-items: center;
-  display: flex;
-  &--background {
-    height: 2px;
-    width: 100%;
-    background: $elephant-paw;
+    width: 90%;
+    height: 20px;
+    position: relative;
+    margin: 0 auto;
     align-items: center;
     display: flex;
-    &::after {
-      content: '';
-      width: 12px;
-      height: 12px;
-      border-radius: 6px;
-      background: $elephant-paw;
-      right: 0;
-      position: absolute;
+
+    &__background {
+        height: 2px;
+        width: 99.5%;
+        background: $elephant-paw;
+        align-items: center;
+        display: flex;
+
+        &::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            background: $elephant-paw;
+            right: 0.5%;
+            position: absolute;
+        }
     }
-  }
-  &--fill {
-    transition: width ease .5s;
-    height: 100%;
-    background: $barney;
-    border-radius: 20px 0px 0px 20px;
-    position: absolute;
-    left: 0;
-  }
+    &--fill {
+        transition: width ease .5s;
+        height: 100%;
+        background: $barney;
+        border-radius: 20px;
+        position: absolute;
+        left: 0;
+    }
 }

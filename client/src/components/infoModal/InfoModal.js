@@ -2,6 +2,9 @@ import React from 'react';
 import './Styles.scss';
 
 class InfoModal extends React.Component {
+    constructor(props) {
+        super(props)
+    }
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside, false);
@@ -21,14 +24,14 @@ class InfoModal extends React.Component {
         const { currentQuestion, handleSetModal } = this.props;
         return (
             <div className='infoModal'>
-                <div ref={node => this.node = node} className='infoModal--container'>
-                    <div className='infoModal--modalClose' onClick={handleSetModal}>
-                        &times;
+                <div ref={node => this.node = node} className='infoModal__container'>
+                    <div className='infoModal__closeIcon' >
+                        <div onClick={handleSetModal}>&times;</div>
                     </div>
 
-                    <div className='infoModal--contentContainer'>
-                        <div className='infoModal--title'>Rules</div>
-                        <p className='infoModal--text'>
+                    <div className='infoModal__contentContainer'>
+                        <div className='infoModal__title'>Rules</div>
+                        <p className='infoModal__text'>
                             {currentQuestion.additionalInfo}
                         </p>
                     </div>

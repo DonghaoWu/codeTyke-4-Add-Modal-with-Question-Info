@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import axios from 'axios';
 
 import SelectionBox from '../selectionBox/SelectionBox';
-import SubmitButton from '../button/SubmitButton';
 import ProgressBar from '../progressBar/ProgressBar';
+import SubmitButton from '../submitButton/SubmitButton';
 import Modal from '../modal/Modal';
-import InfoModal from '../info/InfoModal';
+import Info from '../infoModal/InfoModal';
 import ResultInfo from '../resultInfo/ResultInfo';
 
 import './Styles.scss';
@@ -13,23 +13,21 @@ import './Styles.scss';
 const LearningModule = ({ setGameStatus }) => {
   const [currentQuestionId, setCurrentQuestionId] = React.useState(0);
   const [quizData, setQuizData] = React.useState({});
-  const [showLoader, setShowLoader] = React.useState(false);
+  const [submitLoading, setSubmitLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
-
-  const [selectedAnsArr, setAnswerArr] = React.useState([false, false, false, false]);
   const [resultInfo, setResultInfo] = React.useState('');
+  const [pass, setPass] = React.useState(false);
+  const [submitLabel, setSubmitLabel] = React.useState('Submit');
+  const [selectedAnsArr, setSelectedAnsArr] = React.useState([false, false, false, false]);
+
   const [mode, setMode] = React.useState('normal');
 
-  let hasSelectedOne = selectedAnsArr.includes(true);
+  const hasSelected = selectedAnsArr.includes(true);
 
   let currentQuestion = quizData.questionArr ? quizData.questionArr[currentQuestionId] : {};
   React.useEffect(() => {
     getQuizData();
   }, []);
-
-  const handleSetModal = () => {
-    setModal(!modal);
-  }
 
   const getQuizData = async () => {
     try {
@@ -42,52 +40,75 @@ const LearningModule = ({ setGameStatus }) => {
   }
 
   const handleSubmit = () => {
-    if (currentQuestionId < quizData.totalQuestions - 1) {
-      setShowLoader(true);
-      setTimeout(function () {
-        let correctAnswerNum = 0;
+    if (pass === true) {
+      setPass(false);
+      setResultInfo('');
+      setSubmitLabel('Submit');
+      setMode('normal');
+      setSelectedAnsArr([false, false, false, false]);
+
+      if (currentQuestionId === quizData.totalQuestions - 1) {
+        setCurrentQuestionId(0);
+        setGameStatus({ message: "Great Job! Play again.", loadIntro: true });
+      }
+      else {
+        setCurrentQuestionId(currentQuestionId + 1);
+      }
+    }
+
+    else if (pass === false) {
+      setSubmitLoading(true);
+      setTimeout(() => {
         let selectedCorrectAnswerNum = 0;
-        let selectedWrongAnswerNum = 0;
+        let selectedWrongAnswer = false;
 
         for (let i = 0; i < currentQuestion.possibleAnswers.length; i++) {
-          if (currentQuestion.possibleAnswers[i].isCorrect) correctAnswerNum++;
-          if (currentQuestion.possibleAnswers[i].isCorrect === true && selectedAnsArr[i] === true) selectedCorrectAnswerNum++;
-          if (currentQuestion.possibleAnswers[i].isCorrect === false && selectedAnsArr[i] === true) selectedWrongAnswerNum++;
+          if (currentQuestion.possibleAnswers[i].isCorrect === selectedAnsArr[i]) selectedCorrectAnswerNum++;
+          if (currentQuestion.possibleAnswers[i].isCorrect === false && selectedAnsArr[i] === true) {
+            selectedWrongAnswer = true;
+            break;
+          }
         }
 
-        if (selectedWrongAnswerNum > 0) {
+        if (selectedWrongAnswer) {
+          setPass(false);
           setResultInfo('Try again.');
-          setMode('try');
+          setMode('tryAgain');
         }
-        else if (correctAnswerNum > selectedCorrectAnswerNum) {
-          setResultInfo('Not all.');
+        else if (selectedCorrectAnswerNum !== currentQuestion.possibleAnswers.length) {
           setMode('notAll');
+          setResultInfo('Not all.');
+          setPass(false);
         }
-        else if (correctAnswerNum === selectedCorrectAnswerNum) {
+        else if (selectedCorrectAnswerNum === currentQuestion.possibleAnswers.length) {
+          setPass(true);
           setResultInfo('Correct!');
           setMode('correct');
+          if (currentQuestionId === quizData.totalQuestions - 1) setSubmitLabel('Finish');
+          else setSubmitLabel('Next');
         }
-        setShowLoader(false);
-      }, 500);
-    } else {
-      setCurrentQuestionId(0);
-      setGameStatus({ message: "Great Job! Play again.", loadIntro: true });
+        setSubmitLoading(false);
+      }, 500)
     }
   }
 
-  const handleNextQuestion = () => {
-    setResultInfo('');
-    setAnswerArr([false, false, false, false]);
-    setCurrentQuestionId(currentQuestionId + 1);
+  const handleSetModal = () => {
+    setModal(!modal);
   }
 
   let possibleAnswers = [];
   if (currentQuestion.possibleAnswers) {
     possibleAnswers = currentQuestion.possibleAnswers.map((answer, index) => {
-      return <SelectionBox id={index} key={index} answer={answer} selectedAnsArr={selectedAnsArr} setAnswerArr={setAnswerArr} mode={mode} setMode={setMode} />
+      return <SelectionBox
+        answerId={index}
+        key={index}
+        answer={answer}
+        selectedAnsArr={selectedAnsArr}
+        setSelectedAnsArr={setSelectedAnsArr}
+        mode={mode}
+        setMode={setMode} />
     })
   }
-
 
   return (
     <div className="learningModule">
@@ -96,35 +117,29 @@ const LearningModule = ({ setGameStatus }) => {
           {
             modal &&
             <Modal>
-              <InfoModal handleSetModal={handleSetModal} currentQuestion={currentQuestion} />
+              <Info handleSetModal={handleSetModal} currentQuestion={currentQuestion} />
             </Modal>
           }
           <ProgressBar totalQuestions={quizData.totalQuestions} id={currentQuestion.id} />
-          <div className="learningModule--header">
-            <div className="learningModule--titleContainer">
-              <div className="learningModule--title">
+          <div className="learningModule__header">
+            <div className="learningModule__titleContainer">
+              <div className="learningModule__title">
                 {currentQuestion.title}
               </div>
-              <i className="fas fa-info-circle" onClick={handleSetModal}></i>
+              <i className="fas fa-info-circle infoIcon" onClick={handleSetModal}></i>
             </div>
-            <div className="learningModule--subHeader">
+            <div className="learningModule__subHeader">
               {currentQuestion.additionalInfo}
             </div>
           </div>
 
-          <div className="learningModule--answerArea">
-            <div className="learningModule--selections">
+          <div className="learningModule__answerArea">
+            <div className="learningModule__selections">
               {possibleAnswers}
             </div>
-            <div className="learningModule--submitButtonContainer">
+            <div className="learningModule__submitButtonContainer">
               <ResultInfo resultInfo={resultInfo} />
-              {
-                resultInfo === 'Correct!'
-                  ?
-                  <SubmitButton label="Next" handleSubmit={handleNextQuestion} hasIcons hasSelectedOne={hasSelectedOne} />
-                  :
-                  <SubmitButton label="Submit" handleSubmit={handleSubmit} showLoader={showLoader} hasIcons hasSelectedOne={hasSelectedOne} />
-              }
+              <SubmitButton label={submitLabel} handleSubmit={handleSubmit} submitLoading={submitLoading} hasSelected={hasSelected} />
             </div>
           </div>
         </Fragment>

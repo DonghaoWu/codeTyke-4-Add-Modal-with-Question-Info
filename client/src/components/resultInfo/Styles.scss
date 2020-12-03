@@ -1,0 +1,23 @@
+@import '../../styles/utils/breakpoints';
+
+.resultInfo {
+    margin-right: 10%;
+    font-size: 30px;
+    font-weight: bold;
+
+    &--green{
+        color: #30CC71;
+    }
+
+    &--orange{
+        color:#FCA51E;
+    }
+
+    &--red{
+        color:#FE8A95;
+    }
+
+    @media only screen and (max-width: $mobile) {
+        margin-right: 0;
+    }
+}

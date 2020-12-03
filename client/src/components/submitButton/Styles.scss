@@ -1,0 +1,45 @@
+@import '../../styles/utils/colors';
+@import '../../styles/utils/breakpoints';
+
+.submitButton{
+  color: white;
+  line-height: 50px;
+  font-size: 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  background-color: $grass-blade;
+  padding: 0 2em;
+  cursor: pointer;
+
+  &--disabled{
+    background-color: rgb(187, 184, 184);
+  }
+
+  &__container{
+    width:6rem;
+    display: flex;
+    align-items: center;
+    padding-left: 14%;
+
+    @media only screen and (max-width: $mobile) {
+      padding-left: 40%;
+    }
+  }
+  
+  &__loader{
+    height:25px;
+    margin-left:2px;
+  
+    animation: rotation 1s infinite linear;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
+
