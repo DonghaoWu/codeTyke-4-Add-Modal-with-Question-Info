@@ -2,10 +2,6 @@ import React from 'react';
 import './Styles.scss';
 
 class InfoModal extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside, false);
     }
